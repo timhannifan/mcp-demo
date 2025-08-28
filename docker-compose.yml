@@ -1,0 +1,45 @@
+services:
+  mcp-server:
+    build:
+      context: ./server
+    container_name: scholarlens-mcp-server
+    environment:
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8765
+    expose:
+      - "8765"
+    command: ["python", "app.py"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.settimeout(1); s.connect(('localhost',8765)); s.close()"]
+      interval: 5s
+      timeout: 2s
+      retries: 15
+      start_period: 5s
+    volumes:
+      - index_data:/app/data/index
+      - ./server/data/corpus:/app/data/corpus
+
+  mcp-client:
+    build:
+      context: ./client
+    container_name: scholarlens-mcp-client
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    environment:
+      - MCP_SERVER_URL=http://mcp-server:8765/mcp
+    command: >
+      bash -lc "python scripts/wait_for.py mcp-server 8765 60 &&
+                python mcp_client_smoke.py"
+
+  # Optional: expose server on localhost for demos (run with COMPOSE_PROFILES=dev)
+  mcp-server-dev:
+    profiles: ["dev"]
+    extends:
+      service: mcp-server
+    container_name: scholarlens-mcp-server-dev
+    ports:
+      - "8765:8765"
+
+volumes:
+  index_data:
