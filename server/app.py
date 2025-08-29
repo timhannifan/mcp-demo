@@ -1,20 +1,29 @@
 import os
-from dotenv import load_dotenv
 from starlette.responses import PlainTextResponse
 from starlette.requests import Request
 from fastmcp import FastMCP
 from schemas import AnswerWithCitations, TextProfile
 from tools.corpus_answer import corpus_answer
 from tools.text_profile import text_profile
+from config.settings import config
+from config.logging_config import setup_logging
 
-# Load environment variables
-load_dotenv()
+# Setup logging with config
+setup_logging(
+    level=config.log_level,
+    format_string=config.log_format
+)
 
 # Quickstart-style server instance
-mcp = FastMCP(name="scholarlens", instructions="Academic retrieval + text analytics demo")
+mcp = FastMCP(
+    name=config.app_name, 
+    instructions=config.app_instructions
+)
 
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(request: Request) -> PlainTextResponse:
+    if not config.health_check_enabled:
+        return PlainTextResponse("Health check disabled", status_code=503)
     return PlainTextResponse("OK")
 
 @mcp.tool
@@ -28,7 +37,6 @@ def text_profile_tool(text_or_doc_id: str) -> TextProfile:
     return text_profile(text_or_doc_id)
 
 if __name__ == "__main__":
-    host = os.getenv("MCP_HOST", "0.0.0.0")
-    port = int(os.getenv("MCP_PORT", "8765"))
+    mcp_config = config.get_mcp_config()
     # Run via HTTP transport so the dockerized client can connect using a URL
-    mcp.run(transport="http", host=host, port=port)
+    mcp.run(transport="http", host=mcp_config["host"], port=mcp_config["port"])

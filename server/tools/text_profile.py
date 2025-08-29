@@ -3,20 +3,23 @@ from typing import List
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from schemas import TextProfile
-from dotenv import load_dotenv
+from config.settings import config
+from config.logging_config import get_logger
 
-load_dotenv()
+logger = get_logger(__name__)
 
-_CORPUS_DIR = os.getenv("CORPUS_DIR", "data/corpus")
 _WORD_RE = re.compile(r"[A-Za-z]+")
-
 _analyzer = SentimentIntensityAnalyzer()
 
 def _read_doc(doc_id: str) -> str | None:
-    path = os.path.join(_CORPUS_DIR, doc_id)
+    corpus_path = config.get_corpus_path()
+    path = f"{corpus_path}/{doc_id}"
     if os.path.isfile(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return f.read()
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        except Exception as e:
+            logger.warning("Failed to read document %s: %s", doc_id, e)
     return None
 
 def _tokenize(text: str) -> List[str]:
