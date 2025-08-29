@@ -2,24 +2,23 @@
 
 A demonstration of the Model Context Protocol (MCP) featuring an academic retrieval and text analytics server with a Python client. This project showcases how to build and deploy MCP tools for document search, question answering, and text analysis.
 
-## 🚀 Features
+## Features
 
 - **Corpus Answer Tool**: Query a local corpus of academic documents and get synthesized answers with citations
 - **Text Profile Tool**: Analyze text documents for readability, sentiment, and linguistic features
 - **Docker-based Deployment**: Containerized server and client for easy setup and testing
 - **FastMCP Integration**: Built on the FastMCP framework for rapid MCP tool development
 
-## ��️ Architecture
+## Architecture
 
 The project consists of two main components:
 
 - **MCP Server** (`server/`): A FastMCP-based server that exposes two tools and serves academic documents
 - **MCP Client** (`client/`): A Python client that demonstrates how to interact with the MCP server
 
-## 📁 Project Structure
+## Project Structure
 
 ```markdown:README.md
-<code_block_to_apply_changes_from>
 mcp-demo/
 ├── client/                 # MCP client implementation
 │   ├── Dockerfile         # Client container configuration
@@ -37,11 +36,6 @@ mcp-demo/
 ├── docker-compose.yml     # Multi-container orchestration
 └── Makefile              # Development commands
 ```
-
-## 🛠️ Prerequisites
-
-- Docker and Docker Compose
-- Python 3.13+ (for local development)
 
 ##  Quick Start
 
@@ -67,7 +61,7 @@ make logs
 make down
 ```
 
-## 🔧 Development Commands
+## Development Commands
 
 ```bash
 # Rebuild containers from scratch
@@ -86,7 +80,7 @@ make client-sh
 make clean
 ```
 
-## 📊 Available Tools
+## Available Tools
 
 ### 1. Corpus Answer Tool
 
@@ -130,26 +124,26 @@ The server includes three sample academic documents:
 - `air_quality_health.txt` - Air pollution and public health
 - `urban_transport_emissions.txt` - Urban transportation and emissions
 
-## 🌐 API Endpoints
+## API Endpoints
 
 - **MCP Tools**: Available at `/mcp` (MCP protocol)
 - **Health Check**: `GET /health` - Returns "OK" for container health checks
 
-## 🔍 How It Works
+## How It Works
 
 1. **Server Startup**: The MCP server loads the corpus and builds a TF-IDF index for semantic search
 2. **Client Connection**: The client waits for the server to be healthy, then connects via HTTP transport
 3. **Tool Execution**: Tools process requests using scikit-learn for text analysis and similarity search
 4. **Response Format**: All responses use Pydantic models for type safety and validation
 
-## 🐳 Docker Configuration
+## Docker Configuration
 
 - **Server**: Exposes port 8765 internally, with optional localhost binding for development
 - **Client**: Waits for server health check before running the demo
 - **Volumes**: Corpus data is mounted from the host for easy updates
 - **Health Checks**: Built-in health monitoring for reliable orchestration
 
-## 🧪 Testing
+## Testing
 
 The client automatically runs a smoke test that:
 1. Pings the server
@@ -171,21 +165,9 @@ Add new tools in `server/tools/` and register them in `server/app.py` using the 
 
 Update `server/schemas.py` to change response formats or add new data models.
 
-## 📖 Learn More
+## Learn More
 
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
 - [FastMCP Framework](https://github.com/fastmcp/fastmcp)
 - [Scikit-learn Text Processing](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction)
 
-##  Contributing
-
-This is a demonstration project. Feel free to:
-- Add more academic documents to the corpus
-- Implement additional text analysis tools
-- Enhance the client with more interactive features
-- Improve error handling and edge cases
-
-## 📄 License
-
-This project is provided as-is for educational and demonstration purposes.
-```
