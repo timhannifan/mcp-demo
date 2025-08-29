@@ -1,5 +1,6 @@
 # MCP Demo
 
+
 A demonstration of the Model Context Protocol (MCP) featuring an academic retrieval and text analytics server with a Python client. This project showcases how to build and deploy MCP tools for document search, question answering, and text analysis.
 
 ## Features
@@ -16,11 +17,11 @@ The project consists of three main components:
 
 - **MCP Server** (`server/`): A FastMCP-based server that exposes two tools and serves academic documents
 - **MCP Client** (`client/`): A Python client that demonstrates how to interact with the MCP server
-- **Ollama Integration** (`ollmcp/`): Containerized Ollama service with OllMCP client for LLM interactions
+- **Ollama Integration** (`ollmcp/`): Containerized Ollama service with ollmcp client for LLM interactions
 
 ## Project Structure
 
-```markdown:README.md
+```
 mcp-demo/
 ├── client/                 # MCP client implementation
 │   ├── Dockerfile         # Client container configuration
@@ -35,15 +36,21 @@ mcp-demo/
 │   │   └── text_profile.py     # Text analytics
 │   ├── data/corpus/       # Sample academic documents
 │   └── requirements.txt   # Python dependencies
-├── ollmcp/                 # Ollama + OllMCP integration
-│   └── Dockerfile         # OllMCP container with Ollama CLI
+├── ollmcp/                 # Ollama + ollmcp integration
+│   └── Dockerfile         # ollmcp container with Ollama CLI
 ├── docker-compose.yml     # Multi-container orchestration
 └── Makefile              # Development commands
 ```
 
 ## Quick Start
 
-### 1. Start the Services
+### 1. Setup Environment Files
+
+```bash
+make setup
+```
+
+### 2. Start the Services
 
 ```bash
 # Build and run both server and client
@@ -53,13 +60,13 @@ make up
 make dev
 ```
 
-### 2. View Logs
+### 3. View Logs
 
 ```bash
 make logs
 ```
 
-### 3. Stop Services
+### 4. Stop Services
 
 ```bash
 make down
@@ -67,7 +74,7 @@ make down
 
 ## Ollama Integration
 
-This project includes integration with Ollama for local LLM capabilities. You can use OllMCP to interact with your MCP server using local language models.
+This project includes integration with Ollama for local LLM capabilities. You can use ollmcp to interact with your MCP server using local language models.
 
 ### Prerequisites
 
@@ -82,27 +89,27 @@ make ollama
 ```
 
 This command will:
-1. Start the MCP server, Ollama service, and OllMCP container
+1. Start the MCP server, Ollama service, and ollmcp container
 2. Wait for Ollama to be ready
 3. Download the `llama3.2:1b` model (if not already present)
-4. Provide instructions for starting OllMCP
+4. Provide instructions for starting ollmcp
 
 #### Option 2: Start services and go straight to shell
 ```bash
 make ollama-shell
 ```
 
-This drops you directly into the OllMCP container shell.
+This drops you directly into the ollmcp container shell.
 
-### Using OllMCP
+### Using ollmcp
 
-After starting the services, connect to the OllMCP container:
+After starting the services, connect to the ollmcp container:
 
 ```bash
 docker compose exec ollmcp bash
 ```
 
-Then start OllMCP with your MCP server:
+Then start ollmcp with your MCP server:
 
 ```bash
 ollmcp --mcp-server-url http://mcp-server:8765/mcp --host http://ollama:11434 --model llama3.2:1b
@@ -119,7 +126,7 @@ ollama list
 # Pull a different model
 ollama pull qwen2.5:7b
 
-# Use a different model with OllMCP
+# Use a different model with ollmcp
 ollmcp --mcp-server-url http://mcp-server:8765/mcp --host http://ollama:11434 --model qwen2.5:7b
 ```
 
@@ -210,7 +217,7 @@ The server includes three sample academic documents:
 2. **Client Connection**: The client waits for the server to be healthy, then connects via HTTP transport
 3. **Tool Execution**: Tools process requests using scikit-learn for text analysis and similarity search
 4. **Response Format**: All responses use Pydantic models for type safety and validation
-5. **Ollama Integration**: OllMCP connects to both the MCP server and Ollama service for LLM-powered interactions
+5. **Ollama Integration**: ollmcp connects to both the MCP server and Ollama service for LLM-powered interactions
 
 ## Docker Configuration
 
@@ -244,7 +251,7 @@ Update `server/schemas.py` to change response formats or add new data models.
 
 ### Using Different Models
 
-Change the default model in the Makefile or specify a different model when starting OllMCP.
+Change the default model in the Makefile or specify a different model when starting ollmcp.
 
 ## Learn More
 
@@ -252,5 +259,4 @@ Change the default model in the Makefile or specify a different model when start
 - [FastMCP Framework](https://github.com/fastmcp/fastmcp)
 - [Scikit-learn Text Processing](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction)
 - [Ollama](https://ollama.ai/)
-- [OllMCP](https://github.com/ollama/ollmcp)
-
+- [ollmcp](https://github.com/ollama/ollmcp)
