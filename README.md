@@ -1,4 +1,4 @@
-# ScholarLens MCP Demo
+# MCP Demo
 
 A demonstration of the Model Context Protocol (MCP) featuring an academic retrieval and text analytics server with a Python client. This project showcases how to build and deploy MCP tools for document search, question answering, and text analysis.
 
