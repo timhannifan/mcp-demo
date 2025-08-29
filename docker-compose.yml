@@ -45,5 +45,36 @@ services:
     ports:
       - "8765:8765"
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: scholarlens-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama_models:/root/.ollama/models
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    profiles: ["ollama"]
+
+  ollmcp:
+    build:
+      context: ./ollmcp
+    container_name: scholarlens-ollmcp
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    environment:
+      - MCP_SERVER_URL=http://mcp-server:8765/mcp
+      - OLLAMA_HOST=http://ollama:11434
+    profiles: ["ollama"]
+    # Remove the command so it doesn't auto-start
+    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    stdin_open: true
+    tty: true
+
 volumes:
   index_data:
+  ollama_data:
+  ollama_models:
+    driver: local

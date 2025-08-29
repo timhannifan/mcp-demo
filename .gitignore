@@ -143,3 +143,6 @@ venv.bak/
 
 # DB
 *.db
+
+# ollama
+ollama_models/
