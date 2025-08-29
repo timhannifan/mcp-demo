@@ -1,8 +1,17 @@
-import socket, sys, time
+"""Wait for a server to be ready."""
+
+import os
+import socket
+import sys
+import time
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 host = sys.argv[1]
 port = int(sys.argv[2])
-timeout = int(sys.argv[3]) if len(sys.argv) > 3 else 30
+timeout = int(os.getenv("WAIT_TIMEOUT", "30"))
 
 deadline = time.time() + timeout
 while time.time() < deadline:

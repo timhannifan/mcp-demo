@@ -4,8 +4,11 @@ services:
       context: ./server
     container_name: scholarlens-mcp-server
     environment:
-      - MCP_HOST=0.0.0.0
-      - MCP_PORT=8765
+      - MCP_HOST=${MCP_HOST:-0.0.0.0}
+      - MCP_PORT=${MCP_PORT:-8765}
+      - CORPUS_DIR=${CORPUS_DIR:-data/corpus}
+      - APP_NAME=${APP_NAME:-scholarlens}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     expose:
       - "8765"
     command: ["python", "app.py"]
@@ -27,7 +30,8 @@ services:
       mcp-server:
         condition: service_healthy
     environment:
-      - MCP_SERVER_URL=http://mcp-server:8765/mcp
+      - MCP_SERVER_URL=${MCP_SERVER_URL:-http://mcp-server:8765/mcp}
+      - WAIT_TIMEOUT=${WAIT_TIMEOUT:-60}
     command: >
       bash -lc "python scripts/wait_for.py mcp-server 8765 60 &&
                 python mcp_client_smoke.py"
@@ -41,5 +45,36 @@ services:
     ports:
       - "8765:8765"
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: scholarlens-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama_models:/root/.ollama/models
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    profiles: ["ollama"]
+
+  ollmcp:
+    build:
+      context: ./ollmcp
+    container_name: scholarlens-ollmcp
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    environment:
+      - MCP_SERVER_URL=http://mcp-server:8765/mcp
+      - OLLAMA_HOST=http://ollama:11434
+    profiles: ["ollama"]
+    # Remove the command so it doesn't auto-start
+    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    stdin_open: true
+    tty: true
+
 volumes:
   index_data:
+  ollama_data:
+  ollama_models:
+    driver: local
