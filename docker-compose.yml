@@ -4,8 +4,9 @@ services:
       context: ./server
     container_name: scholarlens-mcp-server
     environment:
-      - MCP_HOST=0.0.0.0
-      - MCP_PORT=8765
+      - MCP_HOST=${MCP_HOST:-0.0.0.0}
+      - MCP_PORT=${MCP_PORT:-8765}
+      - CORPUS_DIR=${CORPUS_DIR:-data/corpus}
     expose:
       - "8765"
     command: ["python", "app.py"]
@@ -27,7 +28,8 @@ services:
       mcp-server:
         condition: service_healthy
     environment:
-      - MCP_SERVER_URL=http://mcp-server:8765/mcp
+      - MCP_SERVER_URL=${MCP_SERVER_URL:-http://mcp-server:8765/mcp}
+      - WAIT_TIMEOUT=${WAIT_TIMEOUT:-60}
     command: >
       bash -lc "python scripts/wait_for.py mcp-server 8765 60 &&
                 python mcp_client_smoke.py"

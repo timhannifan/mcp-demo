@@ -4,6 +4,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from schemas import AnswerWithCitations, Source
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 _CORPUS_DIR = os.getenv("CORPUS_DIR", "data/corpus")
 
 _vectorizer = None

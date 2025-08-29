@@ -3,6 +3,9 @@ from typing import List
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from schemas import TextProfile
+from dotenv import load_dotenv
+
+load_dotenv()
 
 _CORPUS_DIR = os.getenv("CORPUS_DIR", "data/corpus")
 _WORD_RE = re.compile(r"[A-Za-z]+")

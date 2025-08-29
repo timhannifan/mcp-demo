@@ -1,10 +1,14 @@
 import os
+from dotenv import load_dotenv
 from starlette.responses import PlainTextResponse
 from starlette.requests import Request
 from fastmcp import FastMCP
 from schemas import AnswerWithCitations, TextProfile
 from tools.corpus_answer import corpus_answer
 from tools.text_profile import text_profile
+
+# Load environment variables
+load_dotenv()
 
 # Quickstart-style server instance
 mcp = FastMCP(name="scholarlens", instructions="Academic retrieval + text analytics demo")

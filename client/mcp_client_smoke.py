@@ -2,6 +2,9 @@ import os
 import asyncio
 from pprint import pprint
 from fastmcp import Client
+from dotenv import load_dotenv
+
+load_dotenv()
 
 async def main():
     url = os.environ.get("MCP_SERVER_URL", "http://localhost:8765/mcp")
