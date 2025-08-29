@@ -256,7 +256,6 @@ Change the default model in the Makefile or specify a different model when start
 ## Learn More
 
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
-- [FastMCP Framework](https://github.com/fastmcp/fastmcp)
-- [Scikit-learn Text Processing](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction)
+- [FastMCP Framework](https://gofastmcp.com/getting-started/welcome)
 - [Ollama](https://ollama.ai/)
-- [ollmcp](https://github.com/ollama/ollmcp)
+- [ollmcp](https://github.com/jonigl/mcp-client-for-ollama)
