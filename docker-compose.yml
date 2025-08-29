@@ -20,7 +20,7 @@ services:
       start_period: 5s
     volumes:
       - index_data:/app/data/index
-      - ./server/data/corpus:/app/data/corpus
+      - ./server/data/corpus:/app/data/corpus:ro  # Bind mount with read-only
 
   mcp-client:
     build:

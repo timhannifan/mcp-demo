@@ -24,6 +24,26 @@ async def health_check(request: Request) -> PlainTextResponse:
     return PlainTextResponse("OK")
 
 
+@mcp.custom_route("/reload", methods=["POST"])
+async def reload_corpus(request: Request) -> PlainTextResponse:
+    """Reload the corpus from disk."""
+    try:
+        # Clear the existing index
+        import tools.corpus_answer
+        from tools.corpus_answer import _ensure_index
+
+        tools.corpus_answer._vectorizer = None
+        tools.corpus_answer._matrix = None
+        tools.corpus_answer._doc_ids = []
+        tools.corpus_answer._docs = []
+
+        # Rebuild the index
+        _ensure_index()
+        return PlainTextResponse("Corpus reloaded successfully")
+    except Exception as e:
+        return PlainTextResponse(f"Error reloading corpus: {e}", status_code=500)
+
+
 @mcp.tool
 def corpus_answer_tool(query: str) -> AnswerWithCitations:
     """Answer a question from the local corpus with short citations."""

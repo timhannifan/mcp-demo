@@ -14,8 +14,9 @@ class AppConfig(BaseSettings):
 
     # MCP Server Configuration
     mcp_host: str = Field(
-        default="0.0.0.0", description="Host to bind the MCP server to"
-    )  # noqa: S104
+        default="0.0.0.0",  # noqa: S104
+        description="Host to bind the MCP server to",
+    )
     mcp_port: int = Field(default=8765, description="Port for the MCP server")
 
     # Corpus Configuration
@@ -25,7 +26,10 @@ class AppConfig(BaseSettings):
 
     # Application Settings
     app_name: str = Field(default="mcpdemo", description="Name of the MCP application")
-    app_instructions: str = Field(default="Academic retrieval + text analytics demo", description="Application description")
+    app_instructions: str = Field(
+        default="Academic retrieval + text analytics demo",
+        description="Application description",
+    )
 
     # Logging Configuration
     log_level: str = Field(default="INFO", description="Logging level")
