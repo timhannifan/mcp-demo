@@ -1,40 +1,40 @@
-import os
-from starlette.responses import PlainTextResponse
-from starlette.requests import Request
+"""Main application for the MCP server."""
+
+from config.logging_config import setup_logging
+from config.settings import config
 from fastmcp import FastMCP
 from schemas import AnswerWithCitations, TextProfile
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse
 from tools.corpus_answer import corpus_answer
 from tools.text_profile import text_profile
-from config.settings import config
-from config.logging_config import setup_logging
 
 # Setup logging with config
-setup_logging(
-    level=config.log_level,
-    format_string=config.log_format
-)
+setup_logging(level=config.log_level, format_string=config.log_format)
 
 # Quickstart-style server instance
-mcp = FastMCP(
-    name=config.app_name, 
-    instructions=config.app_instructions
-)
+mcp = FastMCP(name=config.app_name, instructions=config.app_instructions)
+
 
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(request: Request) -> PlainTextResponse:
+    """Health check endpoint."""
     if not config.health_check_enabled:
         return PlainTextResponse("Health check disabled", status_code=503)
     return PlainTextResponse("OK")
+
 
 @mcp.tool
 def corpus_answer_tool(query: str) -> AnswerWithCitations:
     """Answer a question from the local corpus with short citations."""
     return corpus_answer(query)
 
+
 @mcp.tool
 def text_profile_tool(text_or_doc_id: str) -> TextProfile:
     """Compute basic text analytics for a doc_id or raw text."""
     return text_profile(text_or_doc_id)
+
 
 if __name__ == "__main__":
     mcp_config = config.get_mcp_config()

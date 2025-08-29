@@ -1,7 +1,10 @@
+"""Wait for a server to be ready."""
+
 import os
 import socket
 import sys
 import time
+
 from dotenv import load_dotenv
 
 load_dotenv()
