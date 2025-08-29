@@ -20,7 +20,7 @@ services:
       start_period: 5s
     volumes:
       - index_data:/app/data/index
-      - ./server/data/corpus:/app/data/corpus:ro  # Bind mount with read-only
+      - ./server/data/corpus:/app/data/corpus:ro
 
   mcp-client:
     build:
@@ -36,7 +36,6 @@ services:
       bash -lc "python scripts/wait_for.py mcp-server 8765 60 &&
                 python mcp_client_smoke.py"
 
-  # Optional: expose server on localhost for demos (run with COMPOSE_PROFILES=dev)
   mcp-server-dev:
     profiles: ["dev"]
     extends:
@@ -68,8 +67,7 @@ services:
       - MCP_SERVER_URL=http://mcp-server:8765/mcp
       - OLLAMA_HOST=http://ollama:11434
     profiles: ["ollama"]
-    # Remove the command so it doesn't auto-start
-    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    command: ["tail", "-f", "/dev/null"]
     stdin_open: true
     tty: true
 

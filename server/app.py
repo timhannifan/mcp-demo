@@ -12,7 +12,7 @@ from tools.text_profile import text_profile
 # Setup logging with config
 setup_logging(level=config.log_level, format_string=config.log_format)
 
-# Quickstart-style server instance
+# Initialize server instance
 mcp = FastMCP(name=config.app_name, instructions=config.app_instructions)
 
 
