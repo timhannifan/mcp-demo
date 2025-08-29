@@ -24,13 +24,8 @@ class AppConfig(BaseSettings):
     )
 
     # Application Settings
-    app_name: str = Field(
-        default="scholarlens", description="Name of the MCP application"
-    )
-    app_instructions: str = Field(
-        default="Academic retrieval + text analytics demo",
-        description="Application description",
-    )
+    app_name: str = Field(default="mcpdemo", description="Name of the MCP application")
+    app_instructions: str = Field(default="Academic retrieval + text analytics demo", description="Application description")
 
     # Logging Configuration
     log_level: str = Field(default="INFO", description="Logging level")

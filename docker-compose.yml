@@ -2,12 +2,12 @@ services:
   mcp-server:
     build:
       context: ./server
-    container_name: scholarlens-mcp-server
+    container_name: mcpdemo-mcp-server
     environment:
       - MCP_HOST=${MCP_HOST:-0.0.0.0}
       - MCP_PORT=${MCP_PORT:-8765}
       - CORPUS_DIR=${CORPUS_DIR:-data/corpus}
-      - APP_NAME=${APP_NAME:-scholarlens}
+      - APP_NAME=${APP_NAME:-mcpdemo}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     expose:
       - "8765"
@@ -25,7 +25,7 @@ services:
   mcp-client:
     build:
       context: ./client
-    container_name: scholarlens-mcp-client
+    container_name: mcpdemo-mcp-client
     depends_on:
       mcp-server:
         condition: service_healthy
@@ -41,13 +41,13 @@ services:
     profiles: ["dev"]
     extends:
       service: mcp-server
-    container_name: scholarlens-mcp-server-dev
+    container_name: mcpdemo-mcp-server-dev
     ports:
       - "8765:8765"
 
   ollama:
     image: ollama/ollama:latest
-    container_name: scholarlens-ollama
+    container_name: mcpdemo-ollama
     ports:
       - "11434:11434"
     volumes:
@@ -60,7 +60,7 @@ services:
   ollmcp:
     build:
       context: ./ollmcp
-    container_name: scholarlens-ollmcp
+    container_name: mcpdemo-ollmcp
     depends_on:
       mcp-server:
         condition: service_healthy
